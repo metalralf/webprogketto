@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+nav, footer, main {
+    width: 100%;
+}
+
+nav {
+    height: 50px;
+    text-align: center;
+    font-size: x-large;
+    letter-spacing: 10px;
+    display: grid;
+    align-items: center;
+}
+
+footer {
+    height: 100px;
+}
+
+main {
+    height: calc(100% - 150px);
+}
+
+#app {
+    width: 70%;
+    overflow-y: auto;
+}
+
+.app-chooser {
+    width: 30%;
+    float: left;
+    text-align: center;
+}
+
+#app, .app-chooser {
+    height: 100%;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+.nodisplay {
+    display: none;
+}
+
+button:hover {
+    background-color: rgba(57, 106, 214, 0.5)!important;
+}
+
+p{
+    margin: unset;
+}
+
+.app-chooser .btn{
+    width: 80%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
