@@ -9,20 +9,24 @@ class PlayTetris extends Application {
     }
 
     init() {
-        this.columns = 10;
-        this.rows = 20;
-        this.initCanvas();
+        this.playerContainer = document.getElementById('canvas-container');
+        this.playerContainer.style.width = '100%';
+        this.playerContainer.style.height = '100%';
 
         this.player = new Player(
             {
-                canvas: this.canvas,
-                columns: this.columns,
-                rows: this.rows,
+                parent: this.playerContainer,
+                columns: 10,
+                rows: 30,
                 backgroundColor: 'black',
                 objects: [
                     {
                         color: "#00ff00",
-                        matrix: [[1, 1, 1], [0, 1, 0], [0, 0, 0]]
+                        matrix: [
+                            [1, 1, 1],
+                            [0, 1, 0],
+                            [0, 0, 0],
+                        ]
                     },
                     {
                         color: "#0000ff",
@@ -33,8 +37,28 @@ class PlayTetris extends Application {
                         ]
                     },
                     {
+                        color: "#00ffff",
+                        matrix: [
+                            [1, 1, 0],
+                            [0, 1, 0],
+                            [0, 1, 0],
+                        ]
+                    },
+                    {
+                        color: "#ff00ff",
+                        matrix: [
+                            [0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 1, 0, 0],
+                        ]
+                    },
+                    {
                         color: "#ff0000",
-                        matrix: [[1, 1], [1, 1],]
+                        matrix: [
+                            [1, 1],
+                            [1, 1],
+                        ]
                     },
                 ],
                 onGameOver: () => console.log("Game Over"),
@@ -45,7 +69,6 @@ class PlayTetris extends Application {
         this.player.start();
 
         this.resizeCanvas = function () {
-            this.recalculateCanvasSize();
             this.player.invalidate();
         }.bind(this);
 
@@ -80,33 +103,6 @@ class PlayTetris extends Application {
         document.addEventListener('keydown', this.keyDown);
     }
 
-    initCanvas() {
-        this.canvas = document.createElement('canvas');
-        this.canvasContainer = document.getElementById('canvas-container');
-        this.canvasContainer.style.width = '100%';
-        this.canvasContainer.style.height = '100%';
-        this.canvasContainer.append(this.canvas);
-        this.recalculateCanvasSize();
-    }
-
-    recalculateCanvasSize(){
-        const containerAspectRatio = this.canvasContainer.clientWidth / this.canvasContainer.clientHeight;
-        const canvasAspectRatio = this.columns / this.rows;
-
-        //Magassághoz igazít
-        if (canvasAspectRatio < containerAspectRatio) {
-            this.canvas.width = this.canvasContainer.clientHeight * canvasAspectRatio;
-            this.canvas.height = this.canvasContainer.clientHeight;
-            this.canvas.style.marginTop = '0';
-            this.canvas.style.marginLeft = (this.canvasContainer.clientWidth - this.canvas.width) / 2 + 'px';
-            //Szélességhez igazít
-        } else {
-            this.canvas.width = this.canvasContainer.clientWidth;
-            this.canvas.height = this.canvasContainer.clientWidth / canvasAspectRatio;
-            this.canvas.style.marginTop = (this.canvasContainer.clientHeight - this.canvas.height) / 2 + 'px';
-            this.canvas.style.marginLeft = '0';
-        }
-    }
 
     destroy() {
         document.removeEventListener('keydown', this.keyDown)

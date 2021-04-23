@@ -85,13 +85,8 @@ class Player extends BlockPainter {
         if (this.y + this.tetrimino.bottom + 1 <= this.rows && !this.#isCrash(this.x, this.y + 1)) {
             this.#repaint(() => this.y++);
         } else {
-            //Ha nem mozdulhat és van olyan része az objektumnak, ami kilóg a pályáról, akkor vége a játéknak
-            if (this.y + this.tetrimino.top < 0) {
-                this.#gameOver();
-            } else {
-                //Ha nincs olyan része, ami kilóg, akkor lehelyezi az objektumot a táblára
-                this.#put();
-            }
+            //Ha nincs olyan része, ami kilóg, akkor lehelyezi az objektumot a táblára
+            this.#put();
         }
     }
 
@@ -159,7 +154,7 @@ class Player extends BlockPainter {
         this.x = Math.floor((this.columns - this.tetrimino.right + this.tetrimino.left) / 2);
         this.y = -this.tetrimino.bottom;
 
-        for(let i = 0; i < Math.floor(Math.random() * 4); i++){
+        for (let i = 0; i < Math.floor(Math.random() * 4); i++) {
             this.tetrimino.rotateLeft();
         }
 
@@ -194,8 +189,20 @@ class Player extends BlockPainter {
     }
 
     #put() {
+        let gameOver = false;
         //Az objektum teli elemeit belerakja a tábla megfelelő részeibe
-        this.tetrimino.iterateOnlyFullItems((x, y) => this.board[this.y + y][this.x + x] = this.tetrimino);
+        this.tetrimino.iterateOnlyFullItems((x, y) => {
+            if (this.y + y >= 0) {
+                this.board[this.y + y][this.x + x] = this.tetrimino
+            } else {
+                gameOver = true;
+            }
+        });
+
+        if(gameOver) {
+            this.#gameOver();
+            return;
+        }
 
         const fullRows = [];
         const topIndex = this.y + this.tetrimino.top;
