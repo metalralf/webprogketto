@@ -9,19 +9,15 @@ class PlayTetris extends Application {
     }
 
     init() {
-        this.canvas =  document.getElementById('canvas');
+        this.columns = 10;
+        this.rows = 20;
+        this.initCanvas();
 
-        /*
-
-        A player egy canvas-t vár amire kirajzolhat
-
-         */
-
-        let player = new Player(
+        this.player = new Player(
             {
                 canvas: this.canvas,
-                columns: 10,
-                rows: 20,
+                columns: this.columns,
+                rows: this.rows,
                 backgroundColor: 'black',
                 objects: [
                     {
@@ -42,20 +38,26 @@ class PlayTetris extends Application {
                     },
                 ],
                 onGameOver: () => console.log("Game Over"),
+                onScoreChanged: (score) => console.log(score),
             }
         );
 
-        this.canvas.focus();
-        this.canvas.focus();
-        this.canvas.click();
-        player.start();
+        this.player.start();
+
+        this.resizeCanvas = function () {
+            this.recalculateCanvasSize();
+            this.player.invalidate();
+        }.bind(this);
+
+        window.addEventListener('resize', this.resizeCanvas);
+
 
         this.keyDown = function (event) {
             if (event.keyCode === 32) {
-                if (player.isRunning()) {
-                    player.rotate();
+                if (this.player.isRunning()) {
+                    this.player.rotate();
                 } else {
-                    player.start();
+                    this.player.start();
                 }
             }
 
@@ -64,13 +66,13 @@ class PlayTetris extends Application {
                     // player.rotate();
                     break;
                 case 40:
-                    player.moveDown();
+                    this.player.moveDown();
                     break; //down
                 case 39:
-                    player.moveRight();
+                    this.player.moveRight();
                     break; //right
                 case 37:
-                    player.moveLeft();
+                    this.player.moveLeft();
                     break; //left
             }
         }.bind(this);
@@ -78,8 +80,37 @@ class PlayTetris extends Application {
         document.addEventListener('keydown', this.keyDown);
     }
 
+    initCanvas() {
+        this.canvas = document.createElement('canvas');
+        this.canvasContainer = document.getElementById('canvas-container');
+        this.canvasContainer.style.width = '100%';
+        this.canvasContainer.style.height = '100%';
+        this.canvasContainer.append(this.canvas);
+        this.recalculateCanvasSize();
+    }
+
+    recalculateCanvasSize(){
+        const containerAspectRatio = this.canvasContainer.clientWidth / this.canvasContainer.clientHeight;
+        const canvasAspectRatio = this.columns / this.rows;
+
+        //Magassághoz igazít
+        if (canvasAspectRatio < containerAspectRatio) {
+            this.canvas.width = this.canvasContainer.clientHeight * canvasAspectRatio;
+            this.canvas.height = this.canvasContainer.clientHeight;
+            this.canvas.style.marginTop = '0';
+            this.canvas.style.marginLeft = (this.canvasContainer.clientWidth - this.canvas.width) / 2 + 'px';
+            //Szélességhez igazít
+        } else {
+            this.canvas.width = this.canvasContainer.clientWidth;
+            this.canvas.height = this.canvasContainer.clientWidth / canvasAspectRatio;
+            this.canvas.style.marginTop = (this.canvasContainer.clientHeight - this.canvas.height) / 2 + 'px';
+            this.canvas.style.marginLeft = '0';
+        }
+    }
+
     destroy() {
         document.removeEventListener('keydown', this.keyDown)
+        window.removeEventListener('resize', this.resizeCanvas);
         super.destroy();
     }
 

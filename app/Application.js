@@ -42,12 +42,12 @@ class Application {
     }
 
     loadTemplate(){
-        // load css template
         const link = document.createElement('link');
         link.rel='stylesheet';
         link.type='text/css';
         link.href=`app/${this.constructor.name}.css`;
         document.head.appendChild(link);
+
 
         // load html template
         const xhr = new XMLHttpRequest();
