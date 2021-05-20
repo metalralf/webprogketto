@@ -59,8 +59,6 @@ class BlockPainter {
 
         this.canvas.width = this.blocksize * this.columns;
         this.canvas.height = this.blocksize * this.rows;
-        this.canvas.style.marginLeft = Math.floor((this.parent.clientWidth - this.canvas.width) / 2) + 'px';
-        this.canvas.style.marginTop = Math.floor((this.parent.clientHeight - this.canvas.height) / 2) + 'px';
     }
 }
 

@@ -1,0 +1,38 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+footer p {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.loading{
+    width: 5rem; 
+    height: 5rem;
+}
+
+#content-frame{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body{
+    background-image: linear-gradient(to bottom right, #000, rgb(41, 25, 114));
+    color: white;
+}
+
+.btn-custom {
+    color: #fff;
+    background-color: #D2386C;
+    border-color: #D2386C;
+}

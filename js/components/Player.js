@@ -9,8 +9,9 @@ class Player extends BlockPainter {
         this.rows = props.rows;
         this.objects = props.objects;
         this.onGameOver = props.onGameOver;
-        this.onScoreChanged = props.onScoreChanged;
-        this.delay = 100;
+        this.onRowCountChanged = props.onRowCountChanged;
+        this.onObjectCountChanged = props.onObjectCountChanged;
+        this.delay = 150;
         this.isStarted = false;
         this.clearRowsItemDelay = 20;
         this.#init();
@@ -18,7 +19,8 @@ class Player extends BlockPainter {
 
     #init() {
         this.#clearBoard();
-        this.score = 0;
+        this.rowCount = 0;
+        this.objectCount = 0;
     }
 
     //A játék újra indítása
@@ -29,7 +31,8 @@ class Player extends BlockPainter {
         //mert minél nagyobb az y, annál lejjebb vagyunk a táblán
         this.topIndex = this.rows;
         this.isStarted = true;
-        this.#scroeChanged();
+        this.#rowCountChanged();
+        this.#objectCountChanged();
         this.start();
     }
 
@@ -135,9 +138,15 @@ class Player extends BlockPainter {
         }
     }
 
-    #scroeChanged() {
-        if (this.onScoreChanged !== null) {
-            this.onScoreChanged(this.score)
+    #rowCountChanged() {
+        if (this.onRowCountChanged !== null) {
+            this.onRowCountChanged(this.rowCount);
+        }
+    }
+
+    #objectCountChanged() {
+        if (this.onObjectCountChanged !== null) {
+            this.onObjectCountChanged(this.objectCount);
         }
     }
 
@@ -158,8 +167,10 @@ class Player extends BlockPainter {
             this.tetrimino.rotateLeft();
         }
 
-        this.#repaint(() => {
-        });
+        this.#repaint(() => { });
+
+        this.objectCount++;
+        this.#objectCountChanged();
     }
 
     //Az aktuális objektumot kitörli, majd meghívja a megadott callback függvényt és utána kirajzolja újra az objektumot
@@ -288,8 +299,8 @@ class Player extends BlockPainter {
         });
         //A topIndexet eggyel nagyobbra állítja, a legmagasabb pont eggyel lejjebb csúszott a kitörölt sor miatt
         this.topIndex++;
-        this.score++;
-        this.#scroeChanged();
+        this.rowCount++;
+        this.#rowCountChanged();
     }
 
     destroy() {
