@@ -36,3 +36,40 @@ body{
     background-color: #D2386C;
     border-color: #D2386C;
 }
+
+/* Editor */
+.square-line {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0.1rem;
+}
+.square {
+	background-color: transparent;
+	border: solid 1px #ddd;
+	position: relative;
+	width: 3rem;
+	height: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	overflow: hidden;
+	margin: 0.1rem;	
+}
+.filled-square {
+	border: solid 1px #ddd;
+	position: relative;
+	width: 3rem;
+	height: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	overflow: hidden;
+	margin: 0.1rem;	
+}
+input#itemColor {
+    height: auto;
+    border-radius: 0.25rem;
+}

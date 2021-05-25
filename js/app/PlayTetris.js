@@ -143,6 +143,11 @@ class PlayTetris {
     insertIntoLeaderBoard(name, point){
 
     }
+    destroy() {
+        document.removeEventListener('keydown', this.keyDown)
+        window.removeEventListener('resize', this.resizeCanvas);
+        emptyElement(this.playerContainer);
+    }
 }
 
 export default PlayTetris;

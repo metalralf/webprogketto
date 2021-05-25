@@ -40,10 +40,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 app.leaderboard();
             });
         }
-    
+        
         if(editorBtn){
             editorBtn.addEventListener('click', function() {
-                app.editor();
+                app.destroy();
+
+                import('./app/Editor.js').then(function(editorClass){
+                    app = new editorClass.default();
+                });
             });
         }
     });
