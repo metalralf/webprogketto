@@ -145,7 +145,7 @@ class Editor {
         if(e){
             if(this.matrix[i][j] == 0){
                 this.matrix[i][j] = 1;
-                e.className = 'square'
+                e.className = 'filled-square'
                 e.style.backgroundColor = this.color;
             }else{
                 this.matrix[i][j] = 0;
@@ -173,7 +173,7 @@ class Editor {
     coloringEditor(){
         const e = document.getElementById("itemColor");
         this.color = e.value;
-        element = document.getElementsByClassName('square');
+        const element = document.getElementsByClassName('filled-square');
         for(let i = 0; i < element.length; i++){
             element[i].style.backgroundColor = this.color;
         }
