@@ -11,18 +11,9 @@ class PlayTetris {
 
     init() {
         this.playerContainer = document.getElementById('content-frame');
-        this.statsContainer = document.getElementById('stats');
         this.rowStat = document.getElementById('rowCount');
         this.objStat = document.getElementById('objCount');
         this.pointStat = document.getElementById('pointCount');
-
-        if(this.statsContainer){
-            if(this.statsContainer.classList.contains('d-none')){
-                this.statsContainer.classList.remove('d-none');
-                this.playerContainer.classList.remove('col-9');
-                this.playerContainer.classList.add('col-6');
-            }
-        }
 
         this.rowCount = 0;
         this.objCount = 0;
@@ -31,20 +22,19 @@ class PlayTetris {
         
         if(this.playerContainer){
             emptyElement(this.playerContainer);
-            const customObjects = JSON.parse(localStorage.getItem('objects')) ? JSON.parse(localStorage.getItem('objects')) : {};
+            const mergedObjects = this.mergeObjects();
             this.player = new Player(
                 {
                     parent: this.playerContainer,
                     columns: 15,
                     rows: 30,
                     backgroundColor: 'black',
-                    objects: Object.assign(Objects, customObjects),
+                    objects: mergedObjects,
                     onGameOver: () => this.onGameOver(),
                     onRowCountChanged: (rowCount) => this.setRowCount(rowCount),
                     onObjectCountChanged: (objCount) => this.setObjectCount(objCount)
                 }
             );
-
         }
 
         this.resizeCanvas = function () {
@@ -108,12 +98,6 @@ class PlayTetris {
         }
     }
 
-    leaderboard() {
-    }
-
-    editor() {
-    }
-
     setRowCount(rowCount) {
         this.rowCount = rowCount;
         this.rowStat.textContent = this.rowCount;
@@ -149,6 +133,23 @@ class PlayTetris {
         const scores = localStorage.getItem('scores') ? JSON.parse(localStorage.getItem('scores')) : [];
         scores.push({name: name, point: point});
         localStorage.setItem('scores', JSON.stringify(scores));
+    }
+
+    mergeObjects() {
+        const customObjects = JSON.parse(localStorage.getItem('objects')) ? JSON.parse(localStorage.getItem('objects')) : {};
+        const mergedObjects = [];
+        if(customObjects.length){
+            customObjects.forEach(element => {
+                mergedObjects.push(element);
+            });
+        }
+        if(Objects.length){
+            Objects.forEach(element => {
+                mergedObjects.push(element);
+            });
+        }
+
+        return mergedObjects;
     }
 
     destroy() {

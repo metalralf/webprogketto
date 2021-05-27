@@ -53,11 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
         if(leaderboardBtn){
             leaderboardBtn.addEventListener('click', function() {
-                app.destroy();
+                if(app.appName !== 'Leaderboard'){
+                    app.destroy();
 
-                import('./app/LeaderBoard.js').then(function(leaderBoardClass){
-                    app = new leaderBoardClass.default();
-                });
+                    import('./app/LeaderBoard.js').then(function(leaderBoardClass){
+                        app = new leaderBoardClass.default();
+                    });
+                }
             });
         }
         

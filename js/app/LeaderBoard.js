@@ -5,7 +5,7 @@ import Objects from "../components/Objects.js";
 class LeaderBoard {
 
     constructor() {
-        this.appName = 'Editor';
+        this.appName = 'Leaderboard';
         this.init();
     }
 

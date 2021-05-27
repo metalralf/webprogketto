@@ -11,16 +11,8 @@ class Editor {
 
     init() {
         this.playerContainer = document.getElementById('content-frame');
-        this.statsContainer = document.getElementById('stats');
         this.matrix = [];
         this.color = '#ff0000';
-        if(this.statsContainer){
-            if(!this.statsContainer.classList.contains('d-none')){
-                this.statsContainer.classList.add('d-none');
-                this.playerContainer.classList.remove('col-6');
-                this.playerContainer.classList.add('col-9');
-            }
-        }
         if(this.playerContainer){
             this.destroy()
             const xhr = new XMLHttpRequest();

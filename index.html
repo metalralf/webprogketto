@@ -22,14 +22,17 @@
 
     <main class="container-fluid h-100">
         <div class="row align-items-stretch h-100">
-            <aside class="col-3 d-flex flex-column">
-                <h2>Menü</h2>
-                <div><button type="button" class="btn btn-custom mt-3" id="newGameBtn">Új játék</button></div>
-                <div><button type="button" class="btn btn-custom mt-3" id="restartBtn">Restart</button></div>
-                <div><button type="button" class="btn btn-custom mt-3" id="pauseBtn">Szünet</button></div>
-                <div><button type="button" class="btn btn-custom mt-3" id="continueBtn">Folytatás</button></div>
-                <div><button type="button" class="btn btn-custom mt-3" id="leaderboardBtn">Ranglétra</button></div>
-                <div><button type="button" class="btn btn-custom mt-3" id="editorBtn">Elem szerkesztő</button></div>
+            <aside class="col-3 d-flex flex-column justify-content-between">
+                <div>
+                    <h2>Menü</h2>
+                    <div><button type="button" class="btn btn-custom mt-3" id="newGameBtn">Új játék</button></div>
+                    <div><button type="button" class="btn btn-custom mt-3" id="restartBtn">Restart</button></div>
+                    <div><button type="button" class="btn btn-custom mt-3" id="pauseBtn">Szünet</button></div>
+                    <div><button type="button" class="btn btn-custom mt-3" id="continueBtn">Folytatás</button></div>
+                    <div><button type="button" class="btn btn-custom mt-3" id="leaderboardBtn">Ranglétra</button></div>
+                    <div><button type="button" class="btn btn-custom mt-3" id="editorBtn">Elem szerkesztő</button></div>
+                </div>
+                <div><p id="credits">2021, Orsós Lívia, Korsós Richárd, Kapitány Rudolf</p></div>
             </aside>
             <article class="col-6" id="content-frame">
 
@@ -50,14 +53,6 @@
             </aside>
         </div>
     </main>
-
-    <footer class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <p class="text-center">2021, Orsós Lívia, Korsós Richárd, Kapitány Rudolf</p>
-            </div>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous">
