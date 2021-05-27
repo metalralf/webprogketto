@@ -141,7 +141,9 @@ class PlayTetris {
     }
 
     insertIntoLeaderBoard(name, point){
-
+        const scores = localStorage.getItem('scores') ? JSON.parse(localStorage.getItem('scores')) : [];
+        scores.push({name: name, point: point});
+        localStorage.setItem('scores', JSON.stringify(scores));
     }
     destroy() {
         document.removeEventListener('keydown', this.keyDown)
