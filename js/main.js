@@ -13,25 +13,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if(newGameBtn){
             newGameBtn.addEventListener('click', function() {
-                app.newGame();
+                if(app.appName !== 'Game'){
+                    app.destroy();
+
+                    import('./app/PlayTetris.js').then(function(gameClass){
+                        app = new gameClass.default();
+
+                        app.newGame();
+                    });
+                }else{
+                    app.newGame();
+                }
             });
         }
     
         if(restartBtn){
             restartBtn.addEventListener('click', function() {
-                app.restartGame();
+                if(app.appName === 'Game'){
+                    app.restartGame();
+                }
             });
         }
     
         if(pauseBtn){
             pauseBtn.addEventListener('click', function() {
-                app.pauseGame();
+                if(app.appName === 'Game'){
+                    app.pauseGame();
+                }
             });
         }
     
         if(continueBtn){
             continueBtn.addEventListener('click', function() {
-                app.continueGame();
+                if(app.appName === 'Game'){
+                    app.continueGame();
+                }
             });
         }
     
@@ -43,11 +59,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if(editorBtn){
             editorBtn.addEventListener('click', function() {
-                app.destroy();
+                
+                if(app.appName !== 'Editor'){
+                    app.destroy();
 
-                import('./app/Editor.js').then(function(editorClass){
-                    app = new editorClass.default();
-                });
+                    import('./app/Editor.js').then(function(editorClass){
+                        app = new editorClass.default();
+                    });
+                }
             });
         }
     });

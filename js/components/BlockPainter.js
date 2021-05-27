@@ -11,7 +11,7 @@ class BlockPainter {
     }
 
     //Kirajzolás végrehajtása a már beállított színnel
-    #draw(x, y) {
+    draw(x, y) {
         this.ctx.beginPath();
 
         const space = Math.floor(this.blocksize * 0.1);
@@ -28,13 +28,13 @@ class BlockPainter {
     //Kirjazol egy blokkot a megadott pontra, megadott színnel
     drawBlock(x, y, color) {
         this.ctx.fillStyle = color;
-        this.#draw(x, y);
+        this.draw(x, y);
     }
 
     //Kitöröl egy blokkot a megadott ponton
     clearBlock(x, y) {
         this.ctx.fillStyle = this.backgroundColor;
-        this.#draw(x, y);
+        this.draw(x, y);
     }
 
     //Az egész canvast letörli

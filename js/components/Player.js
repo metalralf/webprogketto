@@ -14,25 +14,25 @@ class Player extends BlockPainter {
         this.delay = 150;
         this.isStarted = false;
         this.clearRowsItemDelay = 20;
-        this.#init();
+        this.init();
     }
 
-    #init() {
-        this.#clearBoard();
+    init() {
+        this.clearBoard();
         this.rowCount = 0;
         this.objectCount = 0;
     }
 
     //A játék újra indítása
     restart() {
-        this.#init();
-        this.#generateTetrimino();
+        this.init();
+        this.generateTetrimino();
         //A legmagasabb pontja a táblának ahol már van objektum, fordított értékkel,
         //mert minél nagyobb az y, annál lejjebb vagyunk a táblán
         this.topIndex = this.rows;
         this.isStarted = true;
-        this.#rowCountChanged();
-        this.#objectCountChanged();
+        this.rowCountChanged();
+        this.objectCountChanged();
         this.start();
     }
 
@@ -50,7 +50,7 @@ class Player extends BlockPainter {
     }
 
     //Játék leállítása/szüneteltetése
-    stop() {
+    stopPlayer() {
         if (this.isRunning()) {
             clearInterval(this.looper);
             this.looper = null;
@@ -66,8 +66,8 @@ class Player extends BlockPainter {
         if (!this.isRunning()) return;
 
         //Ha a bal szélén van vagy ha a balra mozdulástól ütközne más objektummal, akkor nem mozdulhat
-        if (this.x + this.tetrimino.left > 0 && !this.#isCrash(this.x - 1, this.y)) {
-            this.#repaint(() => this.x--);
+        if (this.x + this.tetrimino.left > 0 && !this.isCrash(this.x - 1, this.y)) {
+            this.repaint(() => this.x--);
         }
     }
 
@@ -75,8 +75,8 @@ class Player extends BlockPainter {
         if (!this.isRunning()) return;
 
         //Ha a jobb szélén van vagy ha a jobbra mozdulástól ütközne más objektummal, akkor nem mozdulhat
-        if (this.x + this.tetrimino.right < this.columns && !this.#isCrash(this.x + 1, this.y)) {
-            this.#repaint(() => this.x++);
+        if (this.x + this.tetrimino.right < this.columns && !this.isCrash(this.x + 1, this.y)) {
+            this.repaint(() => this.x++);
         }
     }
 
@@ -85,11 +85,11 @@ class Player extends BlockPainter {
         if (!this.isRunning()) return;
 
         //Ha a tábla aljára ért vagy lefelé mozdulva ütközne más objektummal, akkor nem mozdulhat
-        if (this.y + this.tetrimino.bottom + 1 <= this.rows && !this.#isCrash(this.x, this.y + 1)) {
-            this.#repaint(() => this.y++);
+        if (this.y + this.tetrimino.bottom + 1 <= this.rows && !this.isCrash(this.x, this.y + 1)) {
+            this.repaint(() => this.y++);
         } else {
             //Ha nincs olyan része, ami kilóg, akkor lehelyezi az objektumot a táblára
-            this.#put();
+            this.put();
         }
     }
 
@@ -97,16 +97,16 @@ class Player extends BlockPainter {
     rotate() {
         if (!this.isRunning()) return;
 
-        this.#repaint(() => {
+        this.repaint(() => {
             this.tetrimino.rotateLeft();
             //Ha elforgatás után ütközik és így eggyel jobbra vagy balra tolva is ütközik más objektumokkal,
             //akkor visszafordítja. Azaz nem lehet elfordítani.
-            if (this.#isCrash(this.x, this.y)) {
-                if (this.tetrimino.right < this.columns && !this.#isCrash(this.x + 1, this.y)) {
+            if (this.isCrash(this.x, this.y)) {
+                if (this.tetrimino.right < this.columns && !this.isCrash(this.x + 1, this.y)) {
                     this.x++;
                     return;
                 }
-                if (this.tetrimino.left > 0 && !this.#isCrash(this.x - 1, this.y)) {
+                if (this.tetrimino.left > 0 && !this.isCrash(this.x - 1, this.y)) {
                     this.x--;
                     return;
                 }
@@ -130,34 +130,34 @@ class Player extends BlockPainter {
     }
 
     //Játék vége, leállítás és az onGameOver esemény meghívása, ha meg van adva
-    #gameOver() {
+    gameOver() {
         this.isStarted = false;
-        this.stop();
+        this.stopPlayer();
         if (this.onGameOver != null) {
             this.onGameOver();
         }
     }
 
-    #rowCountChanged() {
+    rowCountChanged() {
         if (this.onRowCountChanged !== null) {
             this.onRowCountChanged(this.rowCount);
         }
     }
 
-    #objectCountChanged() {
+    objectCountChanged() {
         if (this.onObjectCountChanged !== null) {
             this.onObjectCountChanged(this.objectCount);
         }
     }
 
     //Letörli az egész táblát
-    #clearBoard() {
+    clearBoard() {
         this.board = Array(this.rows).fill(null).map(() => Array(this.columns).fill(null));
         this.clearCanvas();
     }
 
     //Generál egy új objektumot és középen legfelülre helyezi a táblán
-    #generateTetrimino() {
+    generateTetrimino() {
         const index = Math.round(Math.random() * (this.objects.length - 1));
         this.tetrimino = new Tetrimino(this.objects[index]);
         this.x = Math.floor((this.columns - this.tetrimino.right + this.tetrimino.left) / 2);
@@ -167,14 +167,14 @@ class Player extends BlockPainter {
             this.tetrimino.rotateLeft();
         }
 
-        this.#repaint(() => { });
+        this.repaint(() => { });
 
         this.objectCount++;
-        this.#objectCountChanged();
+        this.objectCountChanged();
     }
 
     //Az aktuális objektumot kitörli, majd meghívja a megadott callback függvényt és utána kirajzolja újra az objektumot
-    #repaint(callback) {
+    repaint(callback) {
         this.tetrimino.iterateOnlyFullItems((x, y) => {
             if (this.y + y >= 0) {
                 this.clearBlock(this.x + x, this.y + y);
@@ -189,7 +189,7 @@ class Player extends BlockPainter {
     }
 
     //Ha a megadott pontba kerülne az aktuális objektum, akkor ütközne-e a táblán szereplő másik objektummal?
-    #isCrash(newX, newY) {
+    isCrash(newX, newY) {
         let result = false;
         this.tetrimino.iterateOnlyFullItems((x, y) => {
             if (newY + y >= 0 && this.board[newY + y][newX + x] !== null) {
@@ -199,7 +199,7 @@ class Player extends BlockPainter {
         return result;
     }
 
-    #put() {
+    put() {
         let gameOver = false;
         //Az objektum teli elemeit belerakja a tábla megfelelő részeibe
         this.tetrimino.iterateOnlyFullItems((x, y) => {
@@ -211,7 +211,7 @@ class Player extends BlockPainter {
         });
 
         if(gameOver) {
-            this.#gameOver();
+            this.gameOver();
             return;
         }
 
@@ -225,7 +225,7 @@ class Player extends BlockPainter {
 
         //Azokat a sorokat vizsgálja meg a ciklus, hogy teli sorok-e, amelyekre hatással van az objektum a lerakás után
         for (let y = this.y + this.tetrimino.bottom - 1; y >= this.y + this.tetrimino.top; y--) {
-            if (this.#isFullRow(y)) {
+            if (this.isFullRow(y)) {
                 //Feltölti a tömböt a teli sorokkal
                 fullRows.push(y);
             }
@@ -233,32 +233,32 @@ class Player extends BlockPainter {
 
         //Ha van teli sor letörli azt egyesével animálva
         if (fullRows.length) {
-            this.stop();
+            this.stopPlayer();
             let index = 0;
 
             //Ha letöröl egy sort, megnézi vannak-e még további sorok, majd a következőt is letörli, ha van
             const clearRowFinished = function () {
                 //Az index értékét még hozzá kell adni a fullRows-ban tárolt y értékekhez,
                 //mert minden törlés után eggyel lejjebb kerülnek a kitörölt sor felett lévő sorok
-                this.#collapseTo(fullRows[index] + index);
+                this.collapseTo(fullRows[index] + index);
                 index++;
                 if (index < fullRows.length) {
-                    this.#clearRow(fullRows[index] + index, clearRowFinished);
+                    this.clearRow(fullRows[index] + index, clearRowFinished);
                 } else {
                     //Ha végig ment a tömbön, azaz minden sort kitörölt, amit kell, új objektumot rak a táblára
-                    this.#generateTetrimino();
+                    this.generateTetrimino();
                     this.start();
                 }
             }.bind(this);
 
-            this.#clearRow(fullRows[0], clearRowFinished);
+            this.clearRow(fullRows[0], clearRowFinished);
         } else {
-            this.#generateTetrimino();
+            this.generateTetrimino();
         }
     }
 
     //Animálva kitöröl egy megadott sort, ha végzett meghívja az OnFinish függvényt
-    #clearRow(y, onFinish) {
+    clearRow(y, onFinish) {
         let x = this.columns - 1;
         const clearBlock = function () {
             this.board[x][y] = 0;
@@ -274,12 +274,12 @@ class Player extends BlockPainter {
     }
 
     //Ha a megadott sor teli (minden eleme a sornak hivatkozik egy objektumra), akkor igazzal tér vissza
-    #isFullRow(y) {
+    isFullRow(y) {
         return this.board[y].every((value) => value !== null);
     }
 
     //Teli sor kitörlése után ez a metódus hívodik meg, hogy a kitörölt sor feletti sorokat, lejjebb tolja eggyel
-    #collapseTo(bottom) {
+    collapseTo(bottom) {
         //A megadott sortól felfelé az összes sort megnézi a topIndex-ig (a legmagasabb pont, ahol már van objektum)
         //és az ott található értékeket az eggyel alatta lévő sorokba másolja
         for (let y = bottom - 1; y >= this.topIndex; y--) {
@@ -300,11 +300,11 @@ class Player extends BlockPainter {
         //A topIndexet eggyel nagyobbra állítja, a legmagasabb pont eggyel lejjebb csúszott a kitörölt sor miatt
         this.topIndex++;
         this.rowCount++;
-        this.#rowCountChanged();
+        this.rowCountChanged();
     }
 
     destroy() {
-        stop();
+        this.stopPlayer();
     }
 }
 

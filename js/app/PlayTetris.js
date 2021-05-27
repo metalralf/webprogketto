@@ -4,15 +4,25 @@ import Objects from "../components/Objects.js";
 
 class PlayTetris {
 
-    constructor() { 
+    constructor() {
+        this.appName = 'Game';
         this.init();
     }
 
     init() {
         this.playerContainer = document.getElementById('content-frame');
+        this.statsContainer = document.getElementById('stats');
         this.rowStat = document.getElementById('rowCount');
         this.objStat = document.getElementById('objCount');
         this.pointStat = document.getElementById('pointCount');
+
+        if(this.statsContainer){
+            if(this.statsContainer.classList.contains('d-none')){
+                this.statsContainer.classList.remove('d-none');
+                this.playerContainer.classList.remove('col-9');
+                this.playerContainer.classList.add('col-6');
+            }
+        }
 
         this.rowCount = 0;
         this.objCount = 0;
@@ -21,14 +31,14 @@ class PlayTetris {
         
         if(this.playerContainer){
             emptyElement(this.playerContainer);
-
+            const customObjects = JSON.parse(localStorage.getItem('objects')) ? JSON.parse(localStorage.getItem('objects')) : {};
             this.player = new Player(
                 {
                     parent: this.playerContainer,
                     columns: 15,
                     rows: 30,
                     backgroundColor: 'black',
-                    objects: Objects,
+                    objects: Object.assign(Objects, customObjects),
                     onGameOver: () => this.onGameOver(),
                     onRowCountChanged: (rowCount) => this.setRowCount(rowCount),
                     onObjectCountChanged: (objCount) => this.setObjectCount(objCount)
@@ -81,14 +91,14 @@ class PlayTetris {
     restartGame() {
         if(this.player && this.player.isStarted){
             this.initPoints();
-            this.player.stop();
+            this.player.stopPlayer();
             this.player.restart();
         }
     }
 
     pauseGame() {
         if(this.player && this.player.isStarted){
-            this.player.stop();
+            this.player.stopPlayer();
         }
     }
 
@@ -117,12 +127,7 @@ class PlayTetris {
     }
 
     recalculatePoints() {
-        if(this.rowCount != 0) {
-            this.pointCount += this.objCount * this.rowCount;
-        } else {
-            this.pointCount += this.objCount;
-        }
-
+        this.pointCount += this.objCount * (this.rowCount + 1);
         this.pointStat.textContent = parseInt(this.pointCount);
     }
 
@@ -143,9 +148,12 @@ class PlayTetris {
     insertIntoLeaderBoard(name, point){
 
     }
+
     destroy() {
         document.removeEventListener('keydown', this.keyDown)
         window.removeEventListener('resize', this.resizeCanvas);
+        this.player.destroy();
+        this.player = null;
         emptyElement(this.playerContainer);
     }
 }

@@ -24,12 +24,12 @@
         <div class="row align-items-stretch h-100">
             <aside class="col-3 d-flex flex-column">
                 <h2>Menü</h2>
-                <button type="button" class="btn btn-custom mt-3" id="newGameBtn">Új játék</button>
-                <button type="button" class="btn btn-custom mt-3" id="restartBtn">Restart</button>
-                <button type="button" class="btn btn-custom mt-3" id="pauseBtn">Szünet</button>
-                <button type="button" class="btn btn-custom mt-3" id="continueBtn">Folytatás</button>
-                <button type="button" class="btn btn-custom mt-3" id="leaderboardBtn">Ranglétra</button>
-                <button type="button" class="btn btn-custom mt-3" id="editorBtn">Elem szerkesztő</button>
+                <div><button type="button" class="btn btn-custom mt-3" id="newGameBtn">Új játék</button></div>
+                <div><button type="button" class="btn btn-custom mt-3" id="restartBtn">Restart</button></div>
+                <div><button type="button" class="btn btn-custom mt-3" id="pauseBtn">Szünet</button></div>
+                <div><button type="button" class="btn btn-custom mt-3" id="continueBtn">Folytatás</button></div>
+                <div><button type="button" class="btn btn-custom mt-3" id="leaderboardBtn">Ranglétra</button></div>
+                <div><button type="button" class="btn btn-custom mt-3" id="editorBtn">Elem szerkesztő</button></div>
             </aside>
             <article class="col-6" id="content-frame">
 
@@ -40,7 +40,7 @@
                 </div>
 
             </article>
-            <aside class="col-3">
+            <aside class="col-3" id="stats">
                 <h2 class="text-end">Statisztika</h2>
                 <div id="stats">
                     <p class="text-end">Objektumok: <span id="objCount">0</span></p>

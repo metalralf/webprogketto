@@ -5,7 +5,7 @@ class Tetrimino {
         //TODO csak négyzetes mátrixot fogad el
         this.height = props.matrix.length;
         this.width = props.matrix.length;
-        this.#updateClientRect();
+        this.updateClientRect();
     }
 
     //Balra fordítja az objektumot
@@ -13,7 +13,7 @@ class Tetrimino {
         const result = Array(this.height).fill(null).map(() => Array(this.width));
         this.iterateMatrix((x, y) => result[x][y] = this.matrix[this.width - y - 1][x]);
         this.matrix = result;
-        this.#updateClientRect();
+        this.updateClientRect();
     }
 
     //Jobbra fordítja az objektumot
@@ -21,7 +21,7 @@ class Tetrimino {
         const result = Array(this.height).fill(null).map(() => Array(this.width));
         this.iterateMatrix((x, y) => result[x][y] = this.matrix[y][this.width - x - 1]);
         this.matrix = result;
-        this.#updateClientRect();
+        this.updateClientRect();
     }
 
     //Bejárja az objektum mátrixának összes elemét
@@ -42,7 +42,7 @@ class Tetrimino {
         });
     }
 
-    #updateClientRect() {
+    updateClientRect() {
         this.left = this.width;
         this.top = this.height;
         this.right = 0;
