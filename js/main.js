@@ -53,7 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
         if(leaderboardBtn){
             leaderboardBtn.addEventListener('click', function() {
-                app.leaderboard();
+                app.destroy();
+
+                import('./app/LeaderBoard.js').then(function(leaderBoardClass){
+                    app = new leaderBoardClass.default();
+                });
             });
         }
         
