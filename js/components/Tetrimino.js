@@ -1,8 +1,11 @@
 class Tetrimino {
     constructor(props) {
         this.color = props.color;
+        this.size = props.matrix.length;
+        if(this.size === 0 || this.size !== props.matrix[0].length){
+            throw 'The matrix must be square matrix';
+        }
         this.matrix = props.matrix;
-        //TODO csak négyzetes mátrixot fogad el
         this.height = props.matrix.length;
         this.width = props.matrix.length;
         this.updateClientRect();

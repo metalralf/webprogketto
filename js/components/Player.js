@@ -101,14 +101,17 @@ class Player extends BlockPainter {
             this.tetrimino.rotateLeft();
             //Ha elforgatás után ütközik és így eggyel jobbra vagy balra tolva is ütközik más objektumokkal,
             //akkor visszafordítja. Azaz nem lehet elfordítani.
+            //Pontosítva: nem eggyel elmozdítva, hanem a méretének felével...
             if (this.isCrash(this.x, this.y)) {
-                if (this.tetrimino.right < this.columns && !this.isCrash(this.x + 1, this.y)) {
-                    this.x++;
-                    return;
-                }
-                if (this.tetrimino.left > 0 && !this.isCrash(this.x - 1, this.y)) {
-                    this.x--;
-                    return;
+                for (let i = 1; i <= this.tetrimino.size / 2; i++) {
+                    if (this.tetrimino.right - i < this.columns && !this.isCrash(this.x - i, this.y)) {
+                        this.x -= i;
+                        return;
+                    }
+                    if (this.tetrimino.left + i > 0 && !this.isCrash(this.x + i, this.y)) {
+                        this.x += i;
+                        return;
+                    }
                 }
                 this.tetrimino.rotateRight();
             }
@@ -160,14 +163,15 @@ class Player extends BlockPainter {
     generateTetrimino() {
         const index = Math.round(Math.random() * (this.objects.length - 1));
         this.tetrimino = new Tetrimino(this.objects[index]);
-        this.x = Math.floor((this.columns - this.tetrimino.right + this.tetrimino.left) / 2);
+        this.x = Math.floor((this.columns - this.tetrimino.size) / 2);
         this.y = -this.tetrimino.bottom;
 
         for (let i = 0; i < Math.floor(Math.random() * 4); i++) {
             this.tetrimino.rotateLeft();
         }
 
-        this.repaint(() => { });
+        this.repaint(() => {
+        });
 
         this.objectCount++;
         this.objectCountChanged();
@@ -189,10 +193,12 @@ class Player extends BlockPainter {
     }
 
     //Ha a megadott pontba kerülne az aktuális objektum, akkor ütközne-e a táblán szereplő másik objektummal?
-    isCrash(newX, newY) {
+    isCrash(x, y) {
         let result = false;
-        this.tetrimino.iterateOnlyFullItems((x, y) => {
-            if (newY + y >= 0 && this.board[newY + y][newX + x] !== null) {
+        this.tetrimino.iterateOnlyFullItems((tx, ty) => {
+            const newX = x + tx;
+            const newY = y + ty;
+            if (newY >= this.rows || newY >= 0 && this.board[newY][newX] !== null) {
                 result = true;
             }
         });
@@ -210,7 +216,7 @@ class Player extends BlockPainter {
             }
         });
 
-        if(gameOver) {
+        if (gameOver) {
             this.gameOver();
             return;
         }
